@@ -20,7 +20,7 @@ def train_cartpole():
         },
         'config': {
             'env': 'CartPole-v0',
-            'framework': 'torch',
+            'framework': 'tf',
             'gamma': 0.99,
             'lr': 0.0003,
             'num_workers': 1,
