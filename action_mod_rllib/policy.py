@@ -50,34 +50,34 @@ def make_action_mod_mixin(modify_actions):
 def create_action_mod_policy(run_or_experiment, modify_actions):
     """Create an action modified policy."""
     # Obtain the default policy data of the vanilla trainer to extend
-    policy_tf_cls, setup_tf_before_init_mixins, tf_mixins, \
-        policy_torch_cls, setup_torch_before_init_mixins, torch_mixins = \
+    policy_tf_cls, setup_tf_before_init, tf_mixins, \
+        policy_torch_cls, setup_torch_before_init, torch_mixins = \
         amr.utils.get_policy_data(run_or_experiment)
 
     # Create the ActionModMixin
     ActionModMixin = make_action_mod_mixin(modify_actions)
 
     # pylint: disable=unused-argument
-    def setup_action_mod_before_init_mixins(policy, obs_space, action_space,
-                                            config):
+    def setup_action_mod_mixin_before_init(policy, obs_space, action_space,
+                                           config):
         """Initialize ActionModMixin."""
         ActionModMixin.__init__(policy)
 
-    def setup_action_mod_tf_before_init_mixins(policy, obs_space, action_space,
-                                               config):
+    def setup_action_mod_mixin_tf_before_init(policy, obs_space, action_space,
+                                              config):
         """Initialize tf default and ActionMod Mixins."""
-        setup_tf_before_init_mixins(policy, obs_space, action_space,
-                                    config)
-        setup_action_mod_before_init_mixins(policy, obs_space, action_space,
-                                            config)
+        setup_tf_before_init(policy, obs_space, action_space,
+                             config)
+        setup_action_mod_mixin_before_init(policy, obs_space, action_space,
+                                           config)
 
-    def setup_action_mod_torch_before_init_mixins(policy, obs_space,
-                                                  action_space, config):
+    def setup_action_mod_mixin_torch_before_init(policy, obs_space,
+                                                 action_space, config):
         """Initialize torch default and ActionMod Mixins."""
-        setup_torch_before_init_mixins(policy, obs_space, action_space,
+        setup_torch_before_init(policy, obs_space, action_space,
                                        config)
-        setup_action_mod_before_init_mixins(policy, obs_space, action_space,
-                                            config)
+        setup_action_mod_mixin_before_init(policy, obs_space, action_space,
+                                           config)
 
     # Extend existing mixins with the ActionModMixin
     tf_mixins.append(ActionModMixin)
@@ -86,12 +86,12 @@ def create_action_mod_policy(run_or_experiment, modify_actions):
     # Extend the default policy with the extended mixins
     action_mod_tf_policy_cls = policy_tf_cls.with_updates(
         name='ActionModTFPolicy',
-        before_init=setup_action_mod_tf_before_init_mixins,
+        before_init=setup_action_mod_mixin_tf_before_init,
         mixins=tf_mixins)
 
     action_mod_torch_policy_cls = policy_torch_cls.with_updates(
         name='ActionModTorchPolicy',
-        before_init=setup_action_mod_torch_before_init_mixins,
+        before_init=setup_action_mod_mixin_torch_before_init,
         mixins=torch_mixins)
 
     return action_mod_tf_policy_cls, action_mod_torch_policy_cls
