@@ -31,13 +31,14 @@ def train_cartpole():
             'model': {
                 'fcnet_hiddens': [32],
                 'fcnet_activation': 'linear',
-            }
-        }
+            },
+        },
     }
 
     # pylint: disable=too-many-arguments
     # pylint: disable=unused-argument
-    def modify_actions(
+    # pylint: disable=too-many-locals
+    def my_modify_actions(
             obs_batch: Union[List[TensorType], TensorType],
             actions: TensorType,
             state_out: List[TensorType],
@@ -64,9 +65,8 @@ def train_cartpole():
 
         return modified_actions, modified_state_out, modified_extra_fetches
 
-    # Create the trainer that uses our overriden version of computing the
-    # actions
-    amr.trainer.create_action_mod_trainer(tune_kwargs, modify_actions)
+    # Create the trainer that uses overridden version of computing the actions
+    amr.trainer.create_action_mod_trainer(tune_kwargs, my_modify_actions)
 
     ray.tune.run(**tune_kwargs)
 
