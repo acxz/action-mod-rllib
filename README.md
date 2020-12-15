@@ -30,8 +30,7 @@ There are 3 things to do to use this library:
 3. Create a trainer which will utilize the `my_modify_actions` method:
 
     ```python
-    action_mod_rllib.trainer.create_action_mod_trainer(tune_kwargs,
-    my_modify_actions)
+    action_mod_rllib.trainer.create_action_mod_trainer(tune_kwargs, my_modify_actions)
     ```
 
 Example usage is in `examples/`.
