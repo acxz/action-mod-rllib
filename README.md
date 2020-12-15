@@ -7,41 +7,31 @@ your own action modification.
 
 There are 3 things to do to use this library:
 
-1. Create a function which performs your action modification.
+1. Change the `run_or_experiment` entry in `tune_kwargs` to
+`ActionMod<run_or_experiment>`.
 
-- See https://github.com/acxz/action-mod-rllib/blob/master/examples/action_mod_example.py#L40
-for an example `modify_action` function.
-
-2. Changes to `tune_kwargs`:
-
-- Change the `run_or_experiment` entry to `ActionMod<run_or_experiment>`.
-
-  For example, if you want to override PPO's action computation, instead of having
-
-  ```python
-  'run_or_experiment': 'PPO'
-  ```
-
-  use the following:
-  ```python
-  'run_or_experiment': 'ActionModPPO'
-  ```
-
-- Add the following entry:
-
-  ```python
-  'modify_action': <modify_action_method>
-  ```
-
-  For example if your method is `modify_action`:
-  ```python
-  `modify_action`: modify_action
-  ```
-
-3. Create a trainer which will utilize the `modify_action` method:
+    For example, if you want to override PPO's action computation, instead of
+    having
 
     ```python
-    action_mod_rllib.trainer.create_action_mod_trainer(tune_kwargs)
+    'run_or_experiment': 'PPO'
+    ```
+
+    use the following:
+    ```python
+    'run_or_experiment': 'ActionModPPO'
+    ```
+
+2. Create a function which performs your action modification.
+
+    See [here](https://github.com/acxz/action-mod-rllib/blob/master/examples/action_mod_example.py)
+    for an example `modify_actions` function.
+
+3. Create a trainer which will utilize the `my_modify_actions` method:
+
+    ```python
+    action_mod_rllib.trainer.create_action_mod_trainer(tune_kwargs,
+    my_modify_actions)
     ```
 
 Example usage is in `examples/`.
