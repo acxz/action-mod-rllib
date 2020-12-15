@@ -27,7 +27,7 @@ There are 3 things to do to use this library:
     See [here](https://github.com/acxz/action-mod-rllib/blob/master/examples/action_mod_example.py)
     for an example `modify_actions` function.
 
-3. Create a trainer which will utilize the `my_modify_actions` method:
+3. Create a trainer which will utilize your `modify_actions` method:
 
     ```python
     action_mod_rllib.trainer.create_action_mod_trainer(tune_kwargs, my_modify_actions)
